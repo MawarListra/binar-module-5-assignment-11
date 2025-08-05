@@ -1,0 +1,31 @@
+coverage:
+  precision: 2
+  round: down
+  range: "70...100"
+
+  status:
+    project:
+      default:
+        target: 90%
+        threshold: 1%
+        base: auto
+    patch:
+      default:
+        target: 80%
+        threshold: 1%
+
+comment:
+  layout: "reach,diff,flags,tree"
+  behavior: default
+  require_changes: false
+
+ignore:
+  - "**/*.config.js"
+  - "**/*.config.ts"
+  - "**/next-env.d.ts"
+  - "coverage/**/*"
+  - "public/**/*"
+  - ".github/**/*"
+  - "**/*.test.ts"
+  - "**/*.test.tsx"
+  - "**/jest.setup.js"

@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "PORT=3001 next start",
     "lint": "next lint",
-    "test": "jest --watchAll"
+    "test": "jest --watchAll",
+    "test:ci": "jest --watchAll=false --coverage",
+    "test:coverage": "jest --coverage --watchAll=false"
   },
   "dependencies": {
     "@primer/css": "17.0.1",
