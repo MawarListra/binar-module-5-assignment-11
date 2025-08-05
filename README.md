@@ -129,11 +129,14 @@ update-profile/
 The GitHub Actions workflow (`.github/workflows/test.yml`) includes:
 
 - **Multi-Node Testing:** Tests on Node.js versions 18 and 20
+- **Dependency Caching:** Uses npm cache for faster builds (requires package-lock.json)
 - **Code Quality:** Runs ESLint for code linting
 - **Test Coverage:** Runs tests with coverage reporting
-- **Coverage Threshold:** Ensures minimum 90% test coverage
+- **Coverage Threshold:** Ensures minimum coverage as defined in jest.config.js
 - **Build Verification:** Verifies the application builds successfully
 - **Notifications:** Sends Telegram notifications on success/failure
+
+**Important:** The workflow uses `npm ci` and dependency caching. Ensure `package-lock.json` is committed to the repository for reproducible builds.
 
 #### 2. CodeCov Integration Setup
 
@@ -189,3 +192,31 @@ To enable Telegram notifications:
 
 - **Purpose:** This project serves as a template or a starting point for building full-stack Next.js applications with a focus on best practices for testing and CI/CD.
 - **Extensibility:** The project can be easily extended by adding more pages, API routes, and components. The existing structure provides a clear separation of concerns, making it scalable for larger applications.
+
+## Troubleshooting
+
+### GitHub Actions CI/CD Issues
+
+**Error: "Dependencies lock file is not found"**
+```
+Error: Dependencies lock file is not found in /home/runner/work/binar-module-5-assignment-11/binar-module-5-assignment-11. Supported file patterns: package-lock.json,npm-shrinkwrap.json,yarn.lock
+```
+
+**Solution:** This error occurs when the GitHub Actions workflow uses `cache: "npm"` but `package-lock.json` is not committed to the repository.
+
+1. Remove `package-lock.json` from `.gitignore`
+2. Commit and push the `package-lock.json` file:
+   ```bash
+   git add package-lock.json
+   git commit -m "Add package-lock.json for CI/CD caching"
+   git push
+   ```
+
+**Alternative Solution:** Remove the cache option from `.github/workflows/test.yml`:
+```yaml
+- name: Use Node.js ${{ matrix.node-version }}
+  uses: actions/setup-node@v4
+  with:
+    node-version: ${{ matrix.node-version }}
+    # Remove this line: cache: "npm"
+```
